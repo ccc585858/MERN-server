@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Course = require("../models").course;
+const User = require("../models").user;
 const courseValidation = require("../validation").courseValidation;
 
 router.use((req, res, next) => {
@@ -97,9 +98,14 @@ router.post("/enroll/:_id", async (req, res) => {
   let { _id } = req.params;
   try {
     let course = await Course.findOne({ _id }).exec();
+
+    if (course.students.includes(req.user._id)) {
+      return res.status(400).send("您已經註冊過此課程了。");
+    }
     // jwt
     course.students.push(req.user._id);
     await course.save();
+
     res.send("註冊成功");
   } catch (e) {
     return res.send(e);
