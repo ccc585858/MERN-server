@@ -93,7 +93,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// 讓學生透過 id 來註冊新課程
+// 讓學生透過課程 id 來註冊新課程
 router.post("/enroll/:_id", async (req, res) => {
   let { _id } = req.params;
   try {
